@@ -1,30 +1,35 @@
+# USAGE:
+# python presentaciones.py EXCEL_FILE_PATH OUTPUT_FOLDER_LOCATION OUTPUT_FOLDER_NAME
+# 
+# 
+# python presentaciones.py /Users/Noelia/something.xlxs /Users/Noelia/Accounts 
+# 
+# command line arguments:
+# - excel file path: required
+# - output folder location: required
+# - output folder name: not required, defaults to `accounts-yyyy-mm-dd-HH:MM:SS`
 
-# FOLDER LOCATION
-# JSON FILE NAME
-# python presentaciones.py JSON_FILE_NAME EXCEL_SHEET_NAME FOLDER_LOCATION
-# 
-# 
-# python presentaciones.py /Users/Noelia/something.xlxs /Users/Noelia/Accounts
-# INPUT goes into function and makes OUTPUT
-# when output is complete, make a new folder at FOLDER_LOCATION
-# 
-# OUTPUT goes into function and does:
-# for every key in dictionary create folder KEY 
-# for every value in key, create folder with name VALUE
+# PSEUDO CODE
+# Step 1: Obtain Input from Excel File
+# Step 2: Convert Input into JSON
+# Step 3: Group Accounts by Opportunities
+# Step 4: Write folders based on groupings!
 
 import os
 import json
 import sys
+import pandas
 from datetime import datetime
 
 current_date = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
-path_to_json_file = sys.argv[1]
+path_to_excel_file = sys.argv[1]
 path_to_output = sys.argv[2]
-output_directory_name = "accounts-" + current_date
-f = open(path_to_json_file,)
 
-data = json.load(f)
+output_directory_name = "accounts-" + current_date if len(sys.argv) == 2 else sys.argv[3]
+
+
+
 # data = {
 #   "Nombre de la cuenta": {
 #     "1": "Google",
@@ -41,17 +46,34 @@ data = json.load(f)
 #     "5": "Idiota"
 #   }
 # }
-print("Grouping accounts from " + path_to_json_file + " to " + path_to_output + "/" + output_directory_name)
 
-def groupOpportunitiesByAccount(accounts, opportunities):
+def convertExcelToJson(path_to_excel_file):
+  print("Converting excel file " + path_to_excel_file + " to JSON")
+  excel_data_df = pandas.read_excel(path_to_excel_file)
+  json_str = excel_data_df.to_json()
+  return json.loads(json_str)
+
+
+# data is in the form { [column]: { 1: row, 2: row} }
+# there is an assumption the first column of the xls sheet is the grouped value
+# column A is accounts, column B is opportunities
+def groupOpportunitiesByAccount(data):
+  print("Grouping opportunities by account")
+  columns = data.keys()
+  accounts = columns[0]
+  opportunities = columns[1]
   grouped_accounts = {}
-  for account_row in accounts: 
-    account_name = accounts[account_row]
+
+  accounts_data = data[accounts]
+  opportunities_data = data[opportunities]
+  for account_row in accounts_data:
+
+    account_name = accounts_data[account_row]
     if account_name not in grouped_accounts:
       # add account name to grouped accounts 
       grouped_accounts[account_name] = []
 
-    opportunity = opportunities[account_row]
+    opportunity = opportunities_data[account_row]
 
     # push opportunity into the list 
     grouped_accounts[account_name].append(opportunity)
@@ -69,6 +91,7 @@ def groupOpportunitiesByAccount(accounts, opportunities):
 def createDirectoryTree(grouped_accounts):
   # create a directory to store accounts 
   root_directory_path = os.path.join(path_to_output, output_directory_name) 
+  print("Creating directory tree at " + root_directory_path)
   os.mkdir(root_directory_path)
 
   # loop over accounts and create dirs
@@ -84,7 +107,9 @@ def createDirectoryTree(grouped_accounts):
       os.mkdir(opportunity_path)
 
 
-opportunities_grouped_by_account = groupOpportunitiesByAccount(data["Nombre de la cuenta"], data["Nombre de la oportunidad"])
+
+data = convertExcelToJson(path_to_excel_file)
+opportunities_grouped_by_account = groupOpportunitiesByAccount(data)
 createDirectoryTree(opportunities_grouped_by_account)
 
 print("Complete!")
