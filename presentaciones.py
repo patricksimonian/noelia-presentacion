@@ -61,7 +61,7 @@ def convertExcelToJson(path_to_excel_file):
 # column A is accounts, column B is opportunities
 def groupOpportunitiesByAccount(data):
   print("Grouping opportunities by account")
-  columns = data.keys()
+  columns = list(data.keys())
   accounts = columns[0]
   opportunities = columns[1]
   grouped_accounts = {}
