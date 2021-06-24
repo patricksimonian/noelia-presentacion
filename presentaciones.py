@@ -2,12 +2,14 @@
 # python presentaciones.py EXCEL_FILE_PATH OUTPUT_FOLDER_LOCATION OUTPUT_FOLDER_NAME
 # 
 # 
-# python presentaciones.py /Users/Noelia/something.xlxs /Users/Noelia/Accounts 
 # 
 # command line arguments:
 # - excel file path: required
 # - output folder location: required
-# - output folder name: not required, defaults to `accounts-yyyy-mm-dd-HH:MM:SS`
+# - output folder name: required required
+
+# EXAMPLE
+# python presentaciones.py /Users/Noelia/something.xlxs /Users/Noelia/Accounts accounts_20201
 
 # PSEUDO CODE
 # Step 1: Obtain Input from Excel File

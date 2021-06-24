@@ -15,7 +15,8 @@ This program can only process `.xls` files. `.xlsx` files are __not processable_
 
 1. Install packages `pip install pandas xlrd json`
 
-2. Run the main script to convert json into directories `python main.py path_to_json_file path_to_write_output`
+2. Run the main script to convert json into directories `python presentaciones.py path_to_xls_file path_to_write_output name_of_output_folder`
+
 
 ## Assumptions
 
