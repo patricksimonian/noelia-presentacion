@@ -1,3 +1,3 @@
-data.json
-pres.xlsx
-accounts*/*
+*.json
+*.xlsx
+*accounts*/* 

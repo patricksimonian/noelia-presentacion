@@ -18,7 +18,7 @@ python 3
 
 There is a big assumption that the excel table is formatted like:
 
-| accounts | opportunities | 
+| Nombre de la cuenta | Nombre de la oportunidad | 
 |----------|---------------|
 | google   | manager       | 
 | google   | intern        |

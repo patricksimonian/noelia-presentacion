@@ -17,7 +17,7 @@ import json
 import sys
 from datetime import datetime
 
-current_date = datetime.today().strftime('%Y-%m-%d')
+current_date = datetime.today().strftime('%Y-%m-%d-%H:%M:%S')
 
 path_to_json_file = sys.argv[1]
 path_to_output = sys.argv[2]
@@ -26,14 +26,14 @@ f = open(path_to_json_file,)
 
 data = json.load(f)
 # data = {
-#   "accounts": {
+#   "Nombre de la cuenta": {
 #     "1": "Google",
 #     "2": "safari",
 #     "3": "explorer",
 #     "4": "Google",
 #     "5": "safari"
 #   },
-#   "opportunities": {
+#   "Nombre de la oportunidad": {
 #     "1": "Developer",
 #     "2": "Intern",
 #     "3": "Janitor",
@@ -84,7 +84,7 @@ def createDirectoryTree(grouped_accounts):
       os.mkdir(opportunity_path)
 
 
-opportunities_grouped_by_account = groupOpportunitiesByAccount(data["accounts"], data["opportunities"])
+opportunities_grouped_by_account = groupOpportunitiesByAccount(data["Nombre de la cuenta"], data["Nombre de la oportunidad"])
 createDirectoryTree(opportunities_grouped_by_account)
 
 print("Complete!")
